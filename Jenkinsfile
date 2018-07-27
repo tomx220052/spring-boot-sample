@@ -23,6 +23,11 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
           }
         }
+        stage('') {
+          steps {
+            cobertura(classCoverageTargets: 'target/site/cobertura/coverage.xml')
+          }
+        }
       }
     }
     stage('archive') {
