@@ -6,6 +6,40 @@ pipeline {
         checkout scm
       }
     }
+    stage('test') {
+      steps {
+        sh 'mvn clean cobertura:cobertura test'
+      }
+    }
+    stage('report') {
+      parallel {
+        stage('report') {
+          steps {
+            junit 'target/surefire-reports/*.xml'
+          }
+        }
+        stage('') {
+          steps {
+            cobertura(classCoverageTargets: 'target/site/cobertura/coverage.xml')
+          }
+        }
+      }
+    }
+    stage('package') {
+      steps {
+        sh 'mvn package '
+      }
+    }
+    stage('archive') {
+      steps {
+        archiveArtifacts 'deploy/release/spring-boot-sample-data-rest-0.1.0.jar'
+      }
+    }
+    stage('deploy') {
+      steps {
+        sh 'make deploy-default'
+      }
+    }
   }
   post {
     always {
