@@ -18,7 +18,7 @@ pipeline {
     }
     stage('archive') {
       steps {
-        archiveArtifacts 'deploy/release/spring-boot-sample-data-rest-0.1.0.jar'
+        archiveArtifacts 'target/spring-boot-sample-data-rest-0.1.0.jar'
       }
     }
     stage('deploy') {
