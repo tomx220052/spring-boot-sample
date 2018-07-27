@@ -12,8 +12,17 @@ pipeline {
       }
     }
     stage('package') {
-      steps {
-        sh 'mvn package '
+      parallel {
+        stage('package') {
+          steps {
+            sh 'mvn package '
+          }
+        }
+        stage('report') {
+          steps {
+            junit 'target/surefire-reports/*.xml'
+          }
+        }
       }
     }
     stage('archive') {
