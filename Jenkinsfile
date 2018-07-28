@@ -37,7 +37,10 @@ pipeline {
     }
     stage('deploy') {
       steps {
-        sh 'make deploy-default'
+        sh '''make build-docker-prod-image
+docker push localhost:5000/java_sample_prod
+make deploy-production-ssh
+'''
       }
     }
   }
